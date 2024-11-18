@@ -42,20 +42,19 @@ function getBathValue() {
   }
   
   function onPageLoad() {
-    console.log( "document loaded" );
-    var url = "https://real-estate-price-predictor-6bbh.onrender.com/get_location_names";
-    $.get(url,function(data, status) {
-        console.log("got response for get_location_names request");
-        if(data) {
+    console.log("document loaded");
+    var url = "http://127.0.0.1:10000/get_location_names";
+    $.get(url, function(data, status) {
+        console.log("Got response for get_location_names request:", data);
+        if (data) {
             var locations = data.locations;
             var uiLocations = document.getElementById("uiLocations");
             $('#uiLocations').empty();
-            for(var i in locations) {
+            for (var i in locations) {
                 var opt = new Option(locations[i]);
                 $('#uiLocations').append(opt);
             }
         }
     });
-  }
-  
-  window.onload = onPageLoad;  
+}
+window.onload = onPageLoad;
