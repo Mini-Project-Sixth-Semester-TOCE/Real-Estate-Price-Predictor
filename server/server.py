@@ -4,6 +4,9 @@ import os
 
 app = Flask(__name__)
 
+@app.route('/')
+def index():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'app.html')
 @app.route('/get_location_names', methods=['GET'])
 def get_location_names():
     response = jsonify({
