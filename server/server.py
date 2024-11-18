@@ -1,12 +1,9 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 import util
 import os
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return send_from_directory(os.path.join(app.root_path, 'static'), 'app.html')
 @app.route('/get_location_names', methods=['GET'])
 def get_location_names():
     response = jsonify({
@@ -17,7 +14,7 @@ def get_location_names():
 
 @app.route('/predict_home_price', methods=['POST'])
 def predict_home_price():
-    data = request.get_json()  # Get data as JSON
+    data = request.get_json()
     total_sqft = float(data['total_sqft'])
     location = data['location']
     bhk = int(data['bhk'])
@@ -28,6 +25,10 @@ def predict_home_price():
     })
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
+
+@app.route('/')
+def index():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'app.html')
 
 if __name__ == "__main__":
     print("Starting Python Flask Server For Home Price Prediction...")
