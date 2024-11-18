@@ -150,9 +150,4 @@ Contributions are welcome! Please follow these steps:
 
 ---
 
-## **License**
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
-
----
-
 Feel free to expand sections as needed or modify for your specific use case!
