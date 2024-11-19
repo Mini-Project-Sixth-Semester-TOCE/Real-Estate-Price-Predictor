@@ -43,7 +43,7 @@ function getBathValue() {
   
   function onPageLoad() {
     console.log("document loaded");
-    var url = "http://127.0.0.1:10000/get_location_names";
+    var url = "https://real-estate-price-predictor-6bbh.onrender.com/get_location_names";
     $.get(url, function(data, status) {
         console.log("Got response for get_location_names request:", data);
         if (data) {
