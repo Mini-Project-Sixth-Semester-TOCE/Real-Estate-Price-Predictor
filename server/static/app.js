@@ -1,24 +1,24 @@
 function getBathValue() {
     var uiBathrooms = document.getElementsByName("uiBathrooms");
-    for(var i in uiBathrooms) {
-      if(uiBathrooms[i].checked) {
-          return parseInt(i)+1;
-      }
+    for (var i in uiBathrooms) {
+        if (uiBathrooms[i].checked) {
+            return parseInt(uiBathrooms[i].value);
+        }
     }
     return -1; // Invalid Value
-  }
-  
-  function getBHKValue() {
+}
+
+function getBHKValue() {
     var uiBHK = document.getElementsByName("uiBHK");
-    for(var i in uiBHK) {
-      if(uiBHK[i].checked) {
-          return parseInt(i)+1;
-      }
+    for (var i in uiBHK) {
+        if (uiBHK[i].checked) {
+            return parseInt(uiBHK[i].value);
+        }
     }
     return -1; // Invalid Value
-  }
-  
-  function onClickedEstimatePrice() {
+}
+
+function onClickedEstimatePrice() {
     console.log("Estimate price button clicked");
 
     var sqft = document.getElementById("uiSqft").value;
@@ -29,7 +29,7 @@ function getBathValue() {
 
     console.log("Inputs: Sqft:", sqft, "BHK:", bhk, "Bath:", bathrooms, "Location:", location);
 
-    var url = https://real-estate-price-predictor-6bbh.onrender.com/predict_home_price";
+    var url = "https://real-estate-price-predictor-6bbh.onrender.com/predict_home_price";
 
     $.post(url, {
         total_sqft: parseFloat(sqft),
@@ -48,12 +48,13 @@ function getBathValue() {
         estPrice.innerHTML = "<h2>Server Error</h2>";
     });
 }
-  
-  function onPageLoad() {
-    console.log("document loaded");
+
+function onPageLoad() {
+    console.log("Document loaded");
     var url = "https://real-estate-price-predictor-6bbh.onrender.com/get_location_names";
-    $.get(url, function(data, status) {
-        console.log("Got response for get_location_names request:", data);
+
+    $.get(url, function (data, status) {
+        console.log("Got response for get_location_names request");
         if (data) {
             var locations = data.locations;
             var uiLocations = document.getElementById("uiLocations");
@@ -65,4 +66,5 @@ function getBathValue() {
         }
     });
 }
+
 window.onload = onPageLoad;
