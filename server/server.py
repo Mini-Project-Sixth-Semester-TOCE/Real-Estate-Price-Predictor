@@ -17,17 +17,25 @@ def get_location_names():
 
 @app.route('/predict_home_price', methods=['POST'])
 def predict_home_price():
-    data = request.get_json()
-    total_sqft = float(data['total_sqft'])
-    location = data['location']
-    bhk = int(data['bhk'])
-    bath = int(data['bath'])
+    try:
+        data = request.get_json()  # Parse incoming JSON data
+        print(f"Received data for prediction: {data}")
 
-    response = jsonify({
-        'estimated_price': util.get_estimated_price(location, total_sqft, bhk, bath)
-    })
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
+        total_sqft = float(data['total_sqft'])
+        location = data['location']
+        bhk = int(data['bhk'])
+        bath = int(data['bath'])
+
+        estimated_price = util.get_estimated_price(location, total_sqft, bhk, bath)
+        print(f"Predicted price: {estimated_price}")
+
+        response = jsonify({'estimated_price': estimated_price})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+
+    except Exception as e:
+        print(f"Error in /predict_home_price: {e}")
+        return jsonify({'error': 'Error occurred while predicting price'}), 500
 
 @app.route('/')
 def index():
