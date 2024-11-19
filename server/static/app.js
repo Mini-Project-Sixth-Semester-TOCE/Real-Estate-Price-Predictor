@@ -20,26 +20,34 @@ function getBathValue() {
   
   function onClickedEstimatePrice() {
     console.log("Estimate price button clicked");
-    var sqft = document.getElementById("uiSqft");
+
+    var sqft = document.getElementById("uiSqft").value;
     var bhk = getBHKValue();
     var bathrooms = getBathValue();
-    var location = document.getElementById("uiLocations");
+    var location = document.getElementById("uiLocations").value;
     var estPrice = document.getElementById("uiEstimatedPrice");
-  
 
-    var url = "https://real-estate-price-predictor-6bbh.onrender.com/predict_home_price"; 
-  
+    console.log("Inputs: Sqft:", sqft, "BHK:", bhk, "Bath:", bathrooms, "Location:", location);
+
+    var url = https://real-estate-price-predictor-6bbh.onrender.com/predict_home_price";
+
     $.post(url, {
-        total_sqft: parseFloat(sqft.value),
+        total_sqft: parseFloat(sqft),
         bhk: bhk,
         bath: bathrooms,
-        location: location.value
-    },function(data, status) {
-        console.log(data.estimated_price);
-        estPrice.innerHTML = "<h2>" + data.estimated_price.toString() + " Lakh</h2>";
-        console.log(status);
+        location: location
+    }, function (data, status) {
+        console.log("Response from server:", data);
+        if (data.estimated_price) {
+            estPrice.innerHTML = "<h2>" + data.estimated_price.toString() + " Lakh</h2>";
+        } else {
+            estPrice.innerHTML = "<h2>Error in prediction</h2>";
+        }
+    }).fail(function (error) {
+        console.error("Error in request:", error);
+        estPrice.innerHTML = "<h2>Server Error</h2>";
     });
-  }
+}
   
   function onPageLoad() {
     console.log("document loaded");
