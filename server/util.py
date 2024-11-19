@@ -6,20 +6,25 @@ __locations = None
 __data_columns = None
 __model = None
 
-def get_estimated_price(location,sqft,bhk,bath):
+def get_estimated_price(location, sqft, bhk, bath):
     try:
-        loc_index = __data_columns.index(location.lower())
-    except:
-        loc_index = -1
+        print(f"Inputs to model: Location: {location}, Sqft: {sqft}, BHK: {bhk}, Bath: {bath}")
 
-    x = np.zeros(len(__data_columns))
-    x[0] = sqft
-    x[1] = bath
-    x[2] = bhk
-    if loc_index>=0:
-        x[loc_index] = 1
+        loc_index = __data_columns.index(location.lower()) if location.lower() in __data_columns else -1
+        x = np.zeros(len(__data_columns))
+        x[0] = sqft
+        x[1] = bath
+        x[2] = bhk
+        if loc_index >= 0:
+            x[loc_index] = 1
 
-    return round(__model.predict([x])[0],2)
+        price = round(__model.predict([x])[0], 2)
+        print(f"Predicted price: {price}")
+        return price
+
+    except Exception as e:
+        print(f"Error in get_estimated_price: {e}")
+        return None
 
 
 def load_saved_artifacts():
