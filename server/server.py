@@ -1,19 +1,28 @@
 from flask import Flask, request, jsonify, send_from_directory
+from flask_cors import CORS
 import util
-from flask_cors import CORS 
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
+CORS(app)  # Enables Cross-Origin Requests
+
+
+@app.route('/')
+def index():
+    # Serve the frontend (HTML) file
+    return send_from_directory(app.static_folder, 'app.html')
+
 
 @app.route('/get_location_names', methods=['GET'])
 def get_location_names():
-    locations = util.get_location_names()
-    print("Locations returned:", locations)  # Debugging
-    response = jsonify({
-        'locations': locations
-    })
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
+    try:
+        response = jsonify({'locations': util.get_location_names()})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+    except Exception as e:
+        print(f"Error in /get_location_names: {e}")
+        return jsonify({'error': 'Unable to fetch location names'}), 500
+
 
 @app.route('/predict_home_price', methods=['POST'])
 def predict_home_price():
@@ -37,11 +46,8 @@ def predict_home_price():
         print(f"Error in /predict_home_price: {e}")
         return jsonify({'error': 'Error occurred while predicting price'}), 500
 
-@app.route('/')
-def index():
-    return send_from_directory(os.path.join(app.root_path, 'static'), 'app.html')
 
 if __name__ == "__main__":
-    print("Starting Python Flask Server For Home Price Prediction...")
+    print("Starting Python Flask Server for Home Price Prediction...")
     util.load_saved_artifacts()
     app.run(host='0.0.0.0', port=10000)
