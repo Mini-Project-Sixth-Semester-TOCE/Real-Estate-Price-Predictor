@@ -31,14 +31,10 @@ def predict_home_price():
         bath = int(data['bath'])
 
         print(f"Inputs: sqft={total_sqft}, location={location}, bhk={bhk}, bath={bath}")
-
-        # Call the util function
         estimated_price = util.get_estimated_price(location, total_sqft, bhk, bath)
         print(f"Predicted price: {estimated_price}")
 
-        response = jsonify({'estimated_price': estimated_price})
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        return response
+        return jsonify({'estimated_price': estimated_price})
     except KeyError as ke:
         print(f"KeyError: Missing field in data: {ke}")
         return jsonify({'error': f"Missing field: {str(ke)}"}), 400
