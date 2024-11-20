@@ -31,23 +31,30 @@ function onClickedEstimatePrice() {
 
     var url = "https://real-estate-price-predictor-6bbh.onrender.com/predict_home_price";
 
-    $.post(url, {
+    $.ajax({
+    url: url,
+    type: "POST",
+    contentType: "application/json",
+    data: JSON.stringify({
         total_sqft: parseFloat(sqft),
         bhk: bhk,
         bath: bathrooms,
         location: location
-    }, function (data, status) {
+    }),
+    success: function (data) {
         console.log("Response from server:", data);
         if (data.estimated_price) {
             estPrice.innerHTML = "<h2>" + data.estimated_price.toString() + " Lakh</h2>";
         } else {
             estPrice.innerHTML = "<h2>Error in prediction</h2>";
         }
-    }).fail(function (error) {
+    },
+    error: function (error) {
         console.error("Error in request:", error);
         estPrice.innerHTML = "<h2>Server Error</h2>";
-    });
-}
+    }
+});
+
 
 function onPageLoad() {
     console.log("Document loaded");
