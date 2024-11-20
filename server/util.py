@@ -30,7 +30,6 @@ def get_estimated_price(location, sqft, bhk, bath):
     except Exception as e:
         print(f"Error in get_estimated_price: {e}")
         raise e
-
 def load_saved_artifacts():
     print("Loading saved artifacts...")
     global __data_columns
